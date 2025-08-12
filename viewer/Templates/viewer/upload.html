@@ -366,7 +366,7 @@
     <div class="container">
         <div class="header">
             <h1>🧬 PDB Protein Analyzer</h1>
-            <p>Analiza protein struktura iz PDB fajlova</p>
+            <p>Analysis of  protein strutures from PDB files</p>
         </div>
 
         <div class="content">
@@ -375,14 +375,14 @@
                 <form method="post" enctype="multipart/form-data" id="uploadForm">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="{{ form.name.id_for_label }}">Naziv proteina:</label>
+                        <label for="{{ form.name.id_for_label }}">Name of the protein:</label>
                         {{ form.name }}
                     </div>
                     <div class="form-group">
-                        <label for="{{ form.file.id_for_label }}">PDB fajl:</label>
+                        <label for="{{ form.file.id_for_label }}">PDB file:</label>
                         {{ form.file }}
                     </div>
-                    <button type="submit" class="upload-btn">🚀 Analiziraj protein</button>
+                    <button type="submit" class="upload-btn">🚀 Analyse protein</button>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -391,48 +391,48 @@
 
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p>Analiziranje PDB fajla...</p>
+                <p>Analysing of PDB file...</p>
             </div>
 
             {% if error %}
                 <div class="error fade-in">
-                    <h3>⚠️ Greška:</h3>
+                    <h3>⚠️ Error:</h3>
                     <p>{{ error }}</p>
                 </div>
             {% endif %}
 
             {% if uploaded_file %}
                 <div class="file-info fade-in">
-                    <p><strong>📄 Naziv fajla:</strong> {{ uploaded_file.name }}</p>
+                    <p><strong>📄 Name of the file:</strong> {{ uploaded_file.name }}</p>
                 </div>
 
                 <div class="stats-grid fade-in">
                     <div class="stat-card">
                         <div class="stat-number">{{ num_chains }}</div>
-                        <div class="stat-label">🔗 Broj lanaca</div>
+                        <div class="stat-label">🔗 Number of chains</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">{{ num_residues }}</div>
-                        <div class="stat-label">🧪 Ukupno aminokiselina</div>
+                        <div class="stat-label">🧪 Total amino acids</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">{{ num_atoms }}</div>
-                        <div class="stat-label">⚛️ Ukupno atoma</div>
+                        <div class="stat-label">⚛️ Total atoms</div>
                     </div>
                 </div>
             {% endif %}
 
             {% if chain_data %}
                 <div class="section fade-in">
-                    <h3>🔗 Analiza po lancima</h3>
+                    <h3>🔗 Analysis by chains</h3>
                     <div style="overflow-x: auto;">
                         <table class="chain-table">
                             <thead>
                                 <tr>
-                                    <th>ID lanca</th>
-                                    <th>Broj aminokiselina</th>
-                                    <th>Broj atoma</th>
-                                    <th>Sekvenca (prvi 50 AA)</th>
+                                    <th>ID of chain</th>
+                                    <th>Number of  amino acids</th>
+                                    <th>Number of  atoms</th>
+                                    <th>Sequent (first 50 AA)</th>
                                 </tr>
                             </thead>
                          <tbody>
@@ -449,15 +449,15 @@
                         </table>
                     </div>
                 </div>
-                <h2>Detaljna analiza po lancima</h2>
+                <h2>Detailed analysis by chains </h2>
 
 {% for chain in chain_data %}
     <div style="margin-bottom: 20px;">
         <h3>Lanac {{ chain.chain_id }}</h3>
-        <p><strong>Broj aminokiselina:</strong> {{ chain.num_residues }}</p>
-        <p><strong>Broj atoma:</strong> {{ chain.atom_count }}</p>
+        <p><strong>Number of amino acids :</strong> {{ chain.num_residues }}</p>
+        <p><strong>Number of atoms:</strong> {{ chain.atom_count }}</p>
 
-        <h4>Učestalost aminokiselina:</h4>
+        <h4>Frequency of amino acids :</h4>
 <p>
     {% for aa, count in chain.aa_counts.items %}
         {{ aa }}: {{ count }}{% if not forloop.last %}, {% endif %}
@@ -470,7 +470,7 @@
                 
             {% if chain_histogram %}
                 <div class="section fade-in">
-                    <h3>📊 Histogram aminokiselina po lancima</h3>
+                    <h3>📊 Histogram of amino acids by chain</h3>
                     <div class="histogram-container">
                         <img src="data:image/png;base64,{{ chain_histogram }}" alt="Histogram po lancima">
                     </div>
@@ -478,11 +478,11 @@
             {% endif %}
 
             {% if aa_counts %}
-    <h3>Učestalost aminokiselina</h3>
+    <h3>Frequency of amino acids</h3>
     <table border="1" cellpadding="5">
         <tr>
-            <th>Aminokiselina</th>
-            <th>Broj pojavljivanja</th>
+            <th>Amino acids</th>
+            <th>Number of occurences </th>
         </tr>
         {% for aa, count in aa_counts.items %}
         <tr>
@@ -496,7 +496,7 @@
 
             {% if histogram %}
                 <div class="section fade-in">
-                    <h3>📊 Histogram aminokiselina (ukupno)</h3>
+                    <h3>📊 Histogram of amino acids (total)</h3>
                     <div class="histogram-container">
                         <img src="data:image/png;base64,{{ histogram }}" alt="Histogram ">
                     </div>
@@ -504,9 +504,329 @@
             {% endif %}
         </div>
     </div>
-   <h3>3D Vizualizacija Proteina</h3>
+   <h3>3D Visualization of  Proteins</h3>
     <div id="viewport" style="width: 800px; height: 600px; border:1px solid black;"></div>
 
+    <!-- Dodajte ovaj deo u upload.html template -->
+
+<h2>DEBUG INFORMACIJE</h2>
+<p>Has secondary structure: {{ has_secondary_structure }}</p>
+<p>Number of  chains: {{ chain_data|length }}</p>
+
+{% for chain in chain_data %}
+    <div style="border: 2px solid red; margin: 10px; padding: 10px;">
+        <h3>DEBUG - Chain {{ chain.chain_id }}</h3>
+        <p>Number  remainders: {{ chain.num_residues }}</p>
+        <p>Sequence  length: {{ chain.sequence|length }}</p>
+        <p>Has secondary structure:: {% if chain.secondary_structure %}YES ({{ chain.secondary_structure|length }}){% else %}NO{% endif %}</p>
+        <p>Has formatted SS: {% if chain.formatted_ss %}YES{% else %}NO{% endif %}</p>
+        
+        {% if chain.formatted_ss %}
+            <p>Text of display blocks: {{ chain.formatted_ss.text_display|length }}</p>
+            <p>Segments: {{ chain.formatted_ss.segments|length }}</p>
+            <p>Interactive data: {{ chain.formatted_ss.interactive_data|length }}</p>
+            <p>Has summary: {% if chain.formatted_ss.summary %}YES{% else %}NO{% endif %}</p>
+        {% endif %}
+        
+        {% if chain.secondary_structure %}
+            <p>SS string (first 50 characters): "{{ chain.secondary_structure|slice:":50" }}"</p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+<!-- Originalni kod sa dodacima za debugging -->
+{% if chain_data %}
+    {% for chain in chain_data %}
+        <div class="ss-container">
+            <h3>Secundary structure - Chain {{ chain.chain_id }}</h3>
+            
+            {% if chain.formatted_ss %}
+                <!-- Toggle buttons za različite prikaze -->
+                <div class="toggle-buttons">
+                    <button class="toggle-btn active" onclick="showDisplay('text-{{ chain.chain_id }}')">
+                        Textual display
+                    </button>
+                    <button class="toggle-btn" onclick="showDisplay('interactive-{{ chain.chain_id }}')">
+                        Interactive display
+                    </button>
+                    <button class="toggle-btn" onclick="showDisplay('segments-{{ chain.chain_id }}')">
+                        Segments
+                    </button>
+                    <button class="toggle-btn" onclick="showDisplay('stats-{{ chain.chain_id }}')">
+                        Statistics
+                    </button>
+                </div>
+
+                <!-- Tekstualni prikaz -->
+                <div id="text-{{ chain.chain_id }}" class="display-section">
+                    <div class="section-header">Textual display of  sequence</div>
+                    
+                    <p>DEBUG: Number of  chains = {{ chain.formatted_ss.text_display|length }}</p>
+                    
+                    {% for block in chain.formatted_ss.text_display %}
+                        <div class="ss-block">
+                            <div class="ss-line">
+                                <span class="ss-positions">{{ block.start_pos }}-{{ block.end_pos }}</span>
+                                <div class="ss-sequence">
+                                    {% for aa in block.sequence %}
+                                        <span>{{ aa }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="ss-line">
+                                <span class="ss-positions"></span>
+                                <div class="ss-structure">
+                                    {% for ss_char in block.secondary_structure %}
+                                        <span class="{% if ss_char == 'H' %}ss-helix{% elif ss_char == 'E' %}ss-sheet{% else %}ss-coil{% endif %}">
+                                            {{ ss_char }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="ss-line">
+                                <span class="ss-positions">Visual:</span>
+                                <div class="ss-visual">{{ block.visual }}</div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p style="color: red;">NEMA TEXT_DISPLAY BLOKOVA!</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Interaktivni prikaz -->
+                <div id="interactive-{{ chain.chain_id }}" class="display-section" style="display: none;">
+                    <div class="section-header">interactive display (hover for details)</div>
+                    
+                    <p>DEBUG: Number of interactive  data = {{ chain.formatted_ss.interactive_data|length }}</p>
+                    
+                    <div class="interactive-sequence">
+                        {% for residue in chain.formatted_ss.interactive_data %}
+                            <span class="interactive-residue {{ residue.css_class }}" 
+                                  title="Pozicija {{ residue.position }}: {{ residue.amino_acid }} ({{ residue.aa_full_name }}) - {{ residue.ss_name }}">
+                                {{ residue.amino_acid }}
+                            </span>
+                        {% empty %}
+                            <p style="color: red;">No interactive data!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Segmenti -->
+                <div id="segments-{{ chain.chain_id }}" class="display-section" style="display: none;">
+                    <div class="section-header">identified segments of secondary structure  </div>
+                    
+                    <p>DEBUG: Segments  number = {{ chain.formatted_ss.segments|length }}</p>
+                    
+                    <div class="segment-list">
+                        {% for segment in chain.formatted_ss.segments %}
+                            <div class="segment-item">
+                                <span class="segment-type {% if segment.type == 'H' %}ss-helix{% elif segment.type == 'E' %}ss-sheet{% else %}ss-coil{% endif %}">
+                                    {{ segment.type_name }}
+                                </span>
+                                <span class="segment-info">
+                                    Positions {{ segment.start }}-{{ segment.end }} 
+                                    ({{ segment.length }}   remains)
+                                </span>
+                            </div>
+                        {% empty %}
+                            <p style="color: red;">No segments</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Statistike -->
+                <div id="stats-{{ chain.chain_id }}" class="display-section" style="display: none;">
+                    <div class="section-header">Statistics of secundary  structure</div>
+                    
+                    {% if chain.formatted_ss.summary %}
+                        <div class="stats-grid">
+                            <div class="stats-card stats-helix">
+                                <h4>Alpha Helix</h4>
+                                <p>{{ chain.formatted_ss.summary.helix_percentage|floatformat:1 }}%</p>
+                                <p>{{ chain.formatted_ss.summary.helix_count }} remains</p>
+                            </div>
+                            <div class="stats-card stats-sheet">
+                                <h4>Beta Sheet</h4>
+                                <p>{{ chain.formatted_ss.summary.sheet_percentage|floatformat:1 }}%</p>
+                                <p>{{ chain.formatted_ss.summary.sheet_count }} remains</p>
+                            </div>
+                            <div class="stats-card stats-coil">
+                                <h4>Coil/Loop</h4>
+                                <p>{{ chain.formatted_ss.summary.coil_percentage|floatformat:1 }}%</p>
+                                <p>{{ chain.formatted_ss.summary.coil_count }} remains</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p style="color: red;">No summary od data!</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div style="color: red; font-weight: bold;">
+                    Doesnt have  formatted  SS for this chain!
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p style="color: red;">No CHAIN_DATA!</p>
+{% endif %}
+
+<style>
+    .ss-helix {
+        background-color: #ff6b6b;
+        color: white;
+        font-weight: bold;
+        padding: 2px 4px;
+        border-radius: 2px;
+    }
+
+    .ss-sheet {
+        background-color: #4ecdc4;
+        color: white;
+        font-weight: bold;
+        padding: 2px 4px;
+        border-radius: 2px;
+    }
+
+    .ss-coil {
+        background-color: #95a5a6;
+        color: white;
+        padding: 2px 4px;
+        border-radius: 2px;
+    }
+
+    .ss-block {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        font-family: monospace;
+    }
+
+    .ss-line {
+        display: flex;
+        align-items: center;
+        margin: 2px 0;
+    }
+
+    .ss-positions {
+        font-size: 10px;
+        color: #666;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+    }
+
+    .ss-sequence, .ss-structure, .ss-visual {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        margin-left: 5px;
+    }
+
+    .toggle-buttons {
+        margin: 15px 0;
+    }
+
+    .toggle-btn {
+        padding: 8px 16px;
+        margin: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .toggle-btn.active {
+        background-color: #0056b3;
+    }
+
+    .display-section {
+        margin: 20px 0;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+    }
+
+    .section-header {
+        background-color: #e9ecef;
+        padding: 10px;
+        margin: -15px -15px 15px -15px;
+        border-radius: 8px 8px 0 0;
+        font-weight: bold;
+    }
+
+    .interactive-residue {
+        display: inline-block;
+        padding: 3px 5px;
+        margin: 1px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 12px;
+    }
+
+    .interactive-residue:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .segment-item {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 5px;
+        background-color: #f1f3f4;
+    }
+
+    .segment-type {
+        width: 100px;
+        font-weight: bold;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .stats-card {
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+    }
+
+    .stats-helix { background-color: #ff6b6b; }
+    .stats-sheet { background-color: #4ecdc4; }
+    .stats-coil { background-color: #95a5a6; }
+</style>
+
+<script>
+function showDisplay(displayId) {
+    // Sakri sve display sekcije za ovaj lanac
+    const chainId = displayId.split('-')[1];
+    const allDisplays = document.querySelectorAll(`div[id*="${chainId}"].display-section`);
+    allDisplays.forEach(display => {
+        display.style.display = 'none';
+    });
+    
+    // Prikaži odabranu sekciju
+    document.getElementById(displayId).style.display = 'block';
+    
+    // Ukloni active klasu sa svih dugmića
+    const buttons = document.querySelectorAll('.toggle-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // Dodaj active klasu na kliknuto dugme
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+}
+</script>
     <script>
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             const loading = document.getElementById('loading');
