@@ -7,7 +7,7 @@ It focuses on **structural, chain-specific, and amino acid composition analysis*
 
 ---
 
-## ✨ Features
+## Features
 - **Load and parse PDB files** using [Biopython](https://biopython.org/).
 - **Detailed per-chain analysis**:
   - Chain ID
