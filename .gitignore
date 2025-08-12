@@ -1,0 +1,23 @@
+ECHO is on.
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+migrations/000*.py
+
+# Virtual Environment
+.env
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS Specific
+.DS_Store
+Thumbs.db
